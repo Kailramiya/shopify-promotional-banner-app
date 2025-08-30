@@ -11,8 +11,9 @@ scopes = "write_themes,read_themes,write_products,read_products"
 
 [auth]
 redirect_urls = [
-  "http://localhost:3000/api/auth/callback",
-  "http://localhost:3000/auth/callback"
+  "https://shopify-promotional-banner-app-nu.vercel.app/api/auth/callback",  # ←← UPDATED
+  "https://shopify-promotional-banner-app-nu.vercel.app/auth/callback",      # ←← UPDATED  
+  "http://localhost:3000/api/auth/callback" 
 ]
 
 [webhooks]
