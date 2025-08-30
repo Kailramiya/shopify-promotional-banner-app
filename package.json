@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "A beautiful Shopify app that displays promotional banners with animations and customizable settings",
   "main": "server/index.js",
-  "keywords": ["shopify", "app", "banner", "promotional", "ecommerce", "nodejs"],
+  "keywords": [
+    "shopify",
+    "app",
+    "banner",
+    "promotional",
+    "ecommerce",
+    "nodejs"
+  ],
   "author": "Your Name <your.email@example.com>",
   "license": "MIT",
   "engines": {
@@ -20,17 +27,17 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@shopify/app": "^3.58.2",
-    "@shopify/cli": "^3.58.2",
-    "express": "^4.18.2",
-    "dotenv": "^16.3.1",
+    "@shopify/app": "^3.49.7",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "helmet": "^7.1.0",
-    "compression": "^1.7.4"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1",
+    "@shopify/cli": "^3.84.1",
     "eslint": "^8.57.0",
+    "nodemon": "^3.0.1",
     "prettier": "^3.1.0"
   },
   "repository": {

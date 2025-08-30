@@ -2,7 +2,7 @@
 
 name = "promotional-banner-app"
 client_id = "db2cd315658853539079df468d796329"
-application_url = "http://localhost:3000"
+application_url = "https://shopify-promotional-banner-app-nu.vercel.app/"
 embedded = true
 
 [access_scopes]
@@ -25,9 +25,10 @@ embedded = false
 [build]
 automatically_update_urls_on_dev = true
 dev_store_url = "https://admin.shopify.com/store/banner-app-test-store3?no_redirect=true"
+include_config_on_deploy = true
 
 [app_proxy]
 # App proxy for serving content to the storefront
-url = "/apps/promotional-banner"
+url = "https://shopify-promotional-banner-app-nu.vercel.app/apps/promotional-banner"
 subpath = "banner"
 prefix = "apps"
