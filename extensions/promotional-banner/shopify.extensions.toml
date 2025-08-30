@@ -1,0 +1,70 @@
+api_version = "2024-07"
+
+[[extensions]]
+type = "theme"
+name = "promotional-banner"
+
+[extensions.settings]
+[[extensions.settings.settings]]
+id = "banner_text"
+type = "text"
+label = "Banner Text"
+default = "🎉 Free Shipping on All Orders! 🎉"
+info = "Enter the promotional message to display"
+
+[[extensions.settings.settings]]
+id = "background_color"
+type = "color"
+label = "Background Color"
+default = "#FF6B6B"
+info = "Primary color for the banner background"
+
+[[extensions.settings.settings]]
+id = "secondary_color"
+type = "color"
+label = "Secondary Color"
+default = "#4ECDC4"
+info = "Secondary color for gradient effect"
+
+[[extensions.settings.settings]]
+id = "text_color"
+type = "color"
+label = "Text Color"
+default = "#FFFFFF"
+info = "Color of the banner text"
+
+[[extensions.settings.settings]]
+id = "enable_animation"
+type = "checkbox"
+label = "Enable Scrolling Animation"
+default = true
+info = "When enabled, text will scroll from right to left"
+
+[[extensions.settings.settings]]
+id = "animation_speed"
+type = "range"
+label = "Animation Speed"
+min = 5
+max = 30
+step = 1
+default = 15
+unit = "s"
+info = "Duration of the scrolling animation in seconds"
+
+[[extensions.settings.settings]]
+id = "banner_height"
+type = "range"
+label = "Banner Height"
+min = 40
+max = 80
+step = 5
+default = 50
+unit = "px"
+info = "Height of the promotional banner"
+
+[[extensions.settings.settings]]
+id = "show_close_button"
+type = "checkbox"
+label = "Show Close Button"
+default = true
+info = "Allow users to close the banner"

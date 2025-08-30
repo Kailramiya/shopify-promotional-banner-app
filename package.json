@@ -1,0 +1,44 @@
+{
+  "name": "shopify-promotional-banner-app",
+  "version": "1.0.0",
+  "description": "A beautiful Shopify app that displays promotional banners with animations and customizable settings",
+  "main": "server/index.js",
+  "keywords": ["shopify", "app", "banner", "promotional", "ecommerce", "nodejs"],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "shopify app dev",
+    "build": "shopify app build",
+    "deploy": "shopify app deploy",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .js,.json",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@shopify/app": "^3.58.2",
+    "@shopify/cli": "^3.58.2",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "eslint": "^8.57.0",
+    "prettier": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/shopify-promotional-banner-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/shopify-promotional-banner-app/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/shopify-promotional-banner-app#readme"
+}

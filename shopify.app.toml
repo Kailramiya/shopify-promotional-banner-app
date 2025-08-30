@@ -1,0 +1,33 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "promotional-banner-app"
+client_id = "db2cd315658853539079df468d796329"
+application_url = "http://localhost:3000"
+embedded = true
+
+[access_scopes]
+# Permissions your app needs
+scopes = "write_themes,read_themes,write_products,read_products"
+
+[auth]
+redirect_urls = [
+  "http://localhost:3000/api/auth/callback",
+  "http://localhost:3000/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-07"
+
+[pos]
+# Point of Sale settings
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "https://admin.shopify.com/store/banner-app-test-store3?no_redirect=true"
+
+[app_proxy]
+# App proxy for serving content to the storefront
+url = "/apps/promotional-banner"
+subpath = "banner"
+prefix = "apps"
