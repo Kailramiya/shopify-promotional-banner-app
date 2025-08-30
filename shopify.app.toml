@@ -6,7 +6,6 @@ application_url = "http://localhost:3000"
 embedded = true
 
 [access_scopes]
-# Permissions your app needs
 scopes = "write_themes,read_themes,write_products,read_products"
 
 [auth]
