@@ -1,21 +1,313 @@
-{% assign avg_rating = block.settings.product.metafields.demo.avg_rating.value | round %}
-<span style="color:{{ block.settings.colour }}">
-  {% render 'stars', rating: avg_rating %}
-</span>
-{% if avg_rating >= 4 %}
-  <br>
-  <img src="{{ "thumbs-up.png" | asset_img_url: '15x' }}" height="15" width="15" loading="lazy">
-  {{ 'ratings.home.recommendationText' | t }}
-{% endif %}
+{% comment %}
+  Promotional Banner App Block
+  A beautiful, responsive promotional banner with customizable animations
+{% endcomment %}
+
+{%- if block.settings.banner_text != blank -%}
+  <div 
+    id="promotional-banner-{{ block.id }}" 
+    class="promotional-banner-wrapper"
+    style="
+      background: linear-gradient(45deg, {{ block.settings.background_color }}, {{ block.settings.secondary_color }});
+      color: {{ block.settings.text_color }};
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid rgba(255,255,255,0.2);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      min-height: {{ block.settings.banner_height }}px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    "
+    data-banner-id="{{ block.id }}"
+  >
+    <div class="promotional-banner-content">
+      {%- if block.settings.enable_animation -%}
+        <div class="scrolling-text" style="animation-duration: {{ block.settings.animation_speed }}s;">
+          {{ block.settings.banner_text }} ✨ Limited Time! ✨ {{ block.settings.banner_text }}
+        </div>
+      {%- else -%}
+        <div class="static-text">
+          {{ block.settings.banner_text }}
+        </div>
+      {%- endif -%}
+    </div>
+    
+    {%- if block.settings.show_close_button -%}
+      <button 
+        class="banner-close" 
+        onclick="closeBanner('{{ block.id }}')" 
+        aria-label="Close promotional banner"
+        type="button"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 1L1 13M1 1L13 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    {%- endif -%}
+  </div>
+
+  <style>
+    .promotional-banner-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px {{ block.settings.show_close_button | default: true ? '50px' : '20px' }} 12px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+    
+    .promotional-banner-wrapper:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    
+    .promotional-banner-content {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .scrolling-text {
+      white-space: nowrap;
+      animation: scroll-banner linear infinite;
+      display: inline-block;
+    }
+    
+    .static-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    
+    .banner-close {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      color: inherit;
+      backdrop-filter: blur(5px);
+    }
+    
+    .banner-close:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-50%) scale(1.1);
+    }
+    
+    .banner-close:focus {
+      outline: 2px solid rgba(255,255,255,0.5);
+      outline-offset: 2px;
+    }
+    
+    @keyframes scroll-banner {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    
+    @keyframes slideUp {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+        max-height: {{ block.settings.banner_height }}px;
+      }
+      100% {
+        transform: translateY(-100%);
+        opacity: 0;
+        max-height: 0;
+      }
+    }
+    
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .promotional-banner-wrapper {
+        padding: 10px {{ block.settings.show_close_button | default: true ? '40px' : '15px' }} 10px 15px;
+        font-size: 14px;
+      }
+      
+      .scrolling-text {
+        animation-duration: calc({{ block.settings.animation_speed }}s * 0.8);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .promotional-banner-wrapper {
+        font-size: 13px;
+      }
+      
+      .banner-close {
+        width: 24px;
+        height: 24px;
+        right: 10px;
+      }
+    }
+  </style>
+
+  <script>
+    function closeBanner(blockId) {
+      const banner = document.getElementById('promotional-banner-' + blockId);
+      if (banner) {
+        banner.style.animation = 'slideUp 0.3s ease-out forwards';
+        setTimeout(() => {
+          banner.style.display = 'none';
+          // Store in localStorage to remember user preference
+          localStorage.setItem('banner-closed-' + blockId, 'true');
+          
+          // Optional: Send analytics event
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'banner_close', {
+              'event_category': 'engagement',
+              'event_label': 'promotional_banner'
+            });
+          }
+        }, 300);
+      }
+    }
+    
+    // Check if banner was previously closed
+    document.addEventListener('DOMContentLoaded', function() {
+      const bannerId = '{{ block.id }}';
+      const bannerElement = document.getElementById('promotional-banner-' + bannerId);
+      
+      if (localStorage.getItem('banner-closed-' + bannerId) === 'true') {
+        if (bannerElement) {
+          bannerElement.style.display = 'none';
+        }
+      } else if (bannerElement) {
+        // Add entrance animation
+        bannerElement.style.animation = 'slideDown 0.5s ease-out';
+      }
+    });
+    
+    // Add slide down entrance animation
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+      @keyframes slideDown {
+        0% {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+  </script>
+{%- endif -%}
 
 {% schema %}
 {
-  "name": "Star Rating",
+  "name": "Promotional Banner",
   "target": "section",
+  "stylesheet": "banner.css",
+  "javascript": "banner.js",
   "settings": [
-    { "type": "product", "id": "product", "label": "product", "autofill": true },
-    { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" }
+    {
+      "type": "paragraph",
+      "content": "Create beautiful promotional banners with customizable colors and animations."
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner Text",
+      "default": "🎉 Free Shipping on All Orders! 🎉",
+      "info": "Enter the promotional message to display"
+    },
+    {
+      "type": "header",
+      "content": "Colors & Styling"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Primary Background Color",
+      "default": "#FF6B6B"
+    },
+    {
+      "type": "color",
+      "id": "secondary_color",
+      "label": "Secondary Background Color",
+      "default": "#4ECDC4",
+      "info": "Used for gradient effect"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Animation & Behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "label": "Enable Scrolling Animation",
+      "default": true,
+      "info": "When enabled, text will scroll from right to left"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "label": "Animation Speed",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 15,
+      "unit": "s",
+      "info": "Duration of one complete scroll cycle"
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "label": "Banner Height",
+      "min": 40,
+      "max": 80,
+      "step": 5,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close_button",
+      "label": "Show Close Button",
+      "default": true,
+      "info": "Allow customers to close the banner"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional Banner",
+      "category": "Promotional",
+      "settings": {
+        "banner_text": "🎉 Free Shipping on All Orders! 🎉",
+        "background_color": "#FF6B6B",
+        "secondary_color": "#4ECDC4",
+        "text_color": "#FFFFFF",
+        "enable_animation": true,
+        "animation_speed": 15,
+        "banner_height": 50,
+        "show_close_button": true
+      }
+    }
   ]
 }
 {% endschema %}
-
